@@ -1,0 +1,26 @@
+{
+  "name": "gevent",
+  "version": "1.0.0",
+  "description": "A command line tool to manage your google events easily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tolsee/gevent.git"
+  },
+  "keywords": [
+    "node.js",
+    "cli",
+    "vorpal",
+    "google",
+    "events"
+  ],
+  "author": "Tulsi Sapkota",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tolsee/gevent/issues"
+  },
+  "homepage": "https://github.com/Tolsee/gevent#readme"
+}
