@@ -1,8 +1,11 @@
+#!/usr/bin/env node
+
 const gEvent = require('vorpal')();
 const {google} = require('googleapis');
 const opn = require('opn');
 const moment = require('moment');
 const chrono = require('chrono-node');
+const Spinner = require('cli-spinner').Spinner;
 
 const utils = require('./utils');
 
@@ -64,9 +67,9 @@ gEvent
     callback();
   });
 
-const Email = gEvent.chalk.black.bgMagenta;
+const Email = gEvent.chalk.white.bgMagenta;
 const Summary = gEvent.chalk.bold.red;
-const Time = gEvent.chalk.bold.black.bgRed;
+const Time = gEvent.chalk.bold.white.bgRed;
 const Location = gEvent.chalk.green;
 
 const Yellow = gEvent.chalk.yellow;
@@ -78,7 +81,11 @@ gEvent
   .option('-r, --results <events>', 'Number of events to show')
   .description('List google event')
   .action(async function(args, callback) {
-    const calender = google.calendar({
+    const spinner = new Spinner('Syncing data.. %s');
+    spinner.setSpinnerString('▖▘▝▗');
+    spinner.start();
+
+    const calendar = google.calendar({
       version: 'v3',
       auth: oauth2Client
     });
@@ -109,9 +116,10 @@ gEvent
 
     if(args.options.results) options.maxResults = args.options.results;
 
-    const res = await calender.events.list(options);
-    const data = res.data;
+    const res = await calendar.events.list(options);
+    spinner.stop();
 
+    const data = res.data;
     this.log(Email('Email: '), data.summary);
     this.log();
 
@@ -145,7 +153,11 @@ gEvent
     }
   })
   .action(async function (args, callback) {
-    const calender = google.calendar({
+    const spinner = new Spinner('Syncing data.. %s');
+    spinner.setSpinnerString('▖▘▝▗');
+    spinner.start();
+
+    const calendar = google.calendar({
       version: 'v3',
       auth: oauth2Client
     });
@@ -183,7 +195,9 @@ gEvent
       resource: event
     };
 
-    const res = await calender.events.insert(options);
+    const res = await calendar.events.insert(options);
+    spinner.stop();
+
     const { summary, start, end, location, htmlLink } = res.data;
 
     this.log(Summary(summary));
@@ -208,5 +222,6 @@ gEvent
   });
 
 gEvent
-  .delimiter('gevent $')
+  .delimiter('ggl-event $')
   .show();
+
